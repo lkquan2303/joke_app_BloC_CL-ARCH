@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:joke_app/presentation/feature/home/home_page.dart';
+import 'package:joke_app/presentation/feature/splash/splash_page.dart';
 
 /// Contains classes and helpers for navigation.
 class AppRouter {
   static PageRoute onGenerateRoute(RouteSettings settings) {
     final args = settings.arguments;
-    return args is ScreenRoute ? args.material() : HomePage.route.material();
+    return args is ScreenRoute ? args.material() : SplashPage.route.material();
   }
 }
 

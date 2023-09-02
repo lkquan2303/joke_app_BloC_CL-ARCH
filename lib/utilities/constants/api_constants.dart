@@ -4,4 +4,6 @@ class ApiConstants {
   static const devBaseUrl = '';
   static const stgBaseUrl = '';
   static const prodBaseUrl = '';
+
+  static const submitJoke = '';
 }
