@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import '../../../../domain/entities/categories.dart';
+import '../../../../data/mock/data.dart';
 
 part 'home_page_state.freezed.dart';
 
@@ -14,21 +14,35 @@ enum HomepagePageStatus {
 @freezed
 class HomepageState with _$HomepageState {
   factory HomepageState({
-    required Categories categoriesResponse,
     required HomepagePageStatus status,
     String? joke,
-    Object? error,
+    String? error,
+    Map<String, bool>? selectedCustomCategories,
+    Map<String, bool>? selectedBlacklistCategories,
+    String? selectedLanguage,
+    bool? customCategoryChecked,
+    String? searchText,
   }) = _HomepageState;
 
   const HomepageState._();
 
-  factory HomepageState.initial() => HomepageState(
-        categoriesResponse: Categories(
-          blacklistCategories: [],
-          musicCategories: [],
-          searchText: '',
-        ),
-        status: HomepagePageStatus.submitCategoriesBegin,
-        error: null,
-      );
+  factory HomepageState.initial() {
+    final Map<String, bool> initialCustomCategories = {
+      for (var category in MockData.customCategories) category: false,
+    };
+
+    final Map<String, bool> initialBlacklistCategories = {
+      for (var category in MockData.blacklistCategories) category: false,
+    };
+
+    return HomepageState(
+      status: HomepagePageStatus.submitCategoriesBegin,
+      error: null,
+      customCategoryChecked: MockData.customCategoryChecked,
+      searchText: '',
+      selectedLanguage: MockData.languages.first,
+      selectedCustomCategories: initialCustomCategories,
+      selectedBlacklistCategories: initialBlacklistCategories,
+    );
+  }
 }

@@ -13,7 +13,7 @@ ApiResponseModel<T> _$ApiResponseModelFromJson<T>(
     ApiResponseModel<T>(
       success: json['success'] as bool?,
       data: _$nullableGenericFromJson(json['data'], fromJsonT),
-      error: json['error'] as String?,
+      error: json['error'] as bool?,
     );
 
 Map<String, dynamic> _$ApiResponseModelToJson<T>(

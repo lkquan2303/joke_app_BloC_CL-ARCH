@@ -1,9 +1,8 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:joke_app/data/models/joke_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 import '../../../../utilities/constants/api_constants.dart';
-import '../../../models/base/api_response_model.dart';
-import '../../../models/categories_model.dart';
 
 part 'api_client.g.dart';
 
@@ -11,8 +10,11 @@ part 'api_client.g.dart';
 abstract class ApiClient {
   factory ApiClient(Dio dio, {String baseUrl}) = _ApiClient;
 
-  @POST(ApiConstants.submitJoke)
-  Future<ApiResponseModel<CategoriesModel>> submitJoke(
-    @Body() CategoriesModel body,
+  @GET('${ApiConstants.getJoke}{categories}')
+  Future<JokeResponseModel> fetchJokeAPI(
+    @Path('categories') String categories,
+    @Query("lang") String lang,
+    @Query("blacklistFlags") String blacklistFlags,
+    @Query("contains") String? contains,
   );
 }

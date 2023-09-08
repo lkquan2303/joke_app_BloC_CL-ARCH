@@ -1,5 +1,3 @@
-import 'package:joke_app/data/models/categories_model.dart';
-import 'package:joke_app/domain/entities/categories.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../../domain/entities/base/api_response.dart';
@@ -25,7 +23,7 @@ class ApiResponseModel<T> {
   final T? data;
 
   @JsonKey(name: 'error')
-  final String? error;
+  final bool? error;
 
   Map<String, dynamic> toJson(
     ApiResponseModel<T> instance,
@@ -37,13 +35,4 @@ class ApiResponseModel<T> {
         error: error,
         success: success,
       );
-
-  ApiResponse<Categories> toCategoryListDataResponse() {
-    final data = this.data as CategoriesModel;
-    return ApiResponse(
-      error: error,
-      success: success,
-      data: data.toCategory(),
-    );
-  }
 }

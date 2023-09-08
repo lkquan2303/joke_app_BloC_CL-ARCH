@@ -9,5 +9,5 @@ class ApiResponse<T> {
 
   final T? data;
 
-  final String? error;
+  final bool? error;
 }

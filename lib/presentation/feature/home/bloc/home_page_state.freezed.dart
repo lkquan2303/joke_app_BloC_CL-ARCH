@@ -16,10 +16,16 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomepageState {
-  Categories get categoriesResponse => throw _privateConstructorUsedError;
   HomepagePageStatus get status => throw _privateConstructorUsedError;
   String? get joke => throw _privateConstructorUsedError;
-  Object? get error => throw _privateConstructorUsedError;
+  String? get error => throw _privateConstructorUsedError;
+  Map<String, bool>? get selectedCustomCategories =>
+      throw _privateConstructorUsedError;
+  Map<String, bool>? get selectedBlacklistCategories =>
+      throw _privateConstructorUsedError;
+  String? get selectedLanguage => throw _privateConstructorUsedError;
+  bool? get customCategoryChecked => throw _privateConstructorUsedError;
+  String? get searchText => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomepageStateCopyWith<HomepageState> get copyWith =>
@@ -33,12 +39,14 @@ abstract class $HomepageStateCopyWith<$Res> {
       _$HomepageStateCopyWithImpl<$Res, HomepageState>;
   @useResult
   $Res call(
-      {Categories categoriesResponse,
-      HomepagePageStatus status,
+      {HomepagePageStatus status,
       String? joke,
-      Object? error});
-
-  $CategoriesCopyWith<$Res> get categoriesResponse;
+      String? error,
+      Map<String, bool>? selectedCustomCategories,
+      Map<String, bool>? selectedBlacklistCategories,
+      String? selectedLanguage,
+      bool? customCategoryChecked,
+      String? searchText});
 }
 
 /// @nodoc
@@ -54,16 +62,16 @@ class _$HomepageStateCopyWithImpl<$Res, $Val extends HomepageState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoriesResponse = null,
     Object? status = null,
     Object? joke = freezed,
     Object? error = freezed,
+    Object? selectedCustomCategories = freezed,
+    Object? selectedBlacklistCategories = freezed,
+    Object? selectedLanguage = freezed,
+    Object? customCategoryChecked = freezed,
+    Object? searchText = freezed,
   }) {
     return _then(_value.copyWith(
-      categoriesResponse: null == categoriesResponse
-          ? _value.categoriesResponse
-          : categoriesResponse // ignore: cast_nullable_to_non_nullable
-              as Categories,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -72,16 +80,31 @@ class _$HomepageStateCopyWithImpl<$Res, $Val extends HomepageState>
           ? _value.joke
           : joke // ignore: cast_nullable_to_non_nullable
               as String?,
-      error: freezed == error ? _value.error : error,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedCustomCategories: freezed == selectedCustomCategories
+          ? _value.selectedCustomCategories
+          : selectedCustomCategories // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      selectedBlacklistCategories: freezed == selectedBlacklistCategories
+          ? _value.selectedBlacklistCategories
+          : selectedBlacklistCategories // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      selectedLanguage: freezed == selectedLanguage
+          ? _value.selectedLanguage
+          : selectedLanguage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customCategoryChecked: freezed == customCategoryChecked
+          ? _value.customCategoryChecked
+          : customCategoryChecked // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      searchText: freezed == searchText
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $CategoriesCopyWith<$Res> get categoriesResponse {
-    return $CategoriesCopyWith<$Res>(_value.categoriesResponse, (value) {
-      return _then(_value.copyWith(categoriesResponse: value) as $Val);
-    });
   }
 }
 
@@ -94,13 +117,14 @@ abstract class _$$_HomepageStateCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {Categories categoriesResponse,
-      HomepagePageStatus status,
+      {HomepagePageStatus status,
       String? joke,
-      Object? error});
-
-  @override
-  $CategoriesCopyWith<$Res> get categoriesResponse;
+      String? error,
+      Map<String, bool>? selectedCustomCategories,
+      Map<String, bool>? selectedBlacklistCategories,
+      String? selectedLanguage,
+      bool? customCategoryChecked,
+      String? searchText});
 }
 
 /// @nodoc
@@ -114,16 +138,16 @@ class __$$_HomepageStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? categoriesResponse = null,
     Object? status = null,
     Object? joke = freezed,
     Object? error = freezed,
+    Object? selectedCustomCategories = freezed,
+    Object? selectedBlacklistCategories = freezed,
+    Object? selectedLanguage = freezed,
+    Object? customCategoryChecked = freezed,
+    Object? searchText = freezed,
   }) {
     return _then(_$_HomepageState(
-      categoriesResponse: null == categoriesResponse
-          ? _value.categoriesResponse
-          : categoriesResponse // ignore: cast_nullable_to_non_nullable
-              as Categories,
       status: null == status
           ? _value.status
           : status // ignore: cast_nullable_to_non_nullable
@@ -132,7 +156,30 @@ class __$$_HomepageStateCopyWithImpl<$Res>
           ? _value.joke
           : joke // ignore: cast_nullable_to_non_nullable
               as String?,
-      error: freezed == error ? _value.error : error,
+      error: freezed == error
+          ? _value.error
+          : error // ignore: cast_nullable_to_non_nullable
+              as String?,
+      selectedCustomCategories: freezed == selectedCustomCategories
+          ? _value._selectedCustomCategories
+          : selectedCustomCategories // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      selectedBlacklistCategories: freezed == selectedBlacklistCategories
+          ? _value._selectedBlacklistCategories
+          : selectedBlacklistCategories // ignore: cast_nullable_to_non_nullable
+              as Map<String, bool>?,
+      selectedLanguage: freezed == selectedLanguage
+          ? _value.selectedLanguage
+          : selectedLanguage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      customCategoryChecked: freezed == customCategoryChecked
+          ? _value.customCategoryChecked
+          : customCategoryChecked // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      searchText: freezed == searchText
+          ? _value.searchText
+          : searchText // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -141,24 +188,52 @@ class __$$_HomepageStateCopyWithImpl<$Res>
 
 class _$_HomepageState extends _HomepageState {
   _$_HomepageState(
-      {required this.categoriesResponse,
-      required this.status,
+      {required this.status,
       this.joke,
-      this.error})
-      : super._();
+      this.error,
+      final Map<String, bool>? selectedCustomCategories,
+      final Map<String, bool>? selectedBlacklistCategories,
+      this.selectedLanguage,
+      this.customCategoryChecked,
+      this.searchText})
+      : _selectedCustomCategories = selectedCustomCategories,
+        _selectedBlacklistCategories = selectedBlacklistCategories,
+        super._();
 
-  @override
-  final Categories categoriesResponse;
   @override
   final HomepagePageStatus status;
   @override
   final String? joke;
   @override
-  final Object? error;
+  final String? error;
+  final Map<String, bool>? _selectedCustomCategories;
+  @override
+  Map<String, bool>? get selectedCustomCategories {
+    final value = _selectedCustomCategories;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  final Map<String, bool>? _selectedBlacklistCategories;
+  @override
+  Map<String, bool>? get selectedBlacklistCategories {
+    final value = _selectedBlacklistCategories;
+    if (value == null) return null;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final String? selectedLanguage;
+  @override
+  final bool? customCategoryChecked;
+  @override
+  final String? searchText;
 
   @override
   String toString() {
-    return 'HomepageState(categoriesResponse: $categoriesResponse, status: $status, joke: $joke, error: $error)';
+    return 'HomepageState(status: $status, joke: $joke, error: $error, selectedCustomCategories: $selectedCustomCategories, selectedBlacklistCategories: $selectedBlacklistCategories, selectedLanguage: $selectedLanguage, customCategoryChecked: $customCategoryChecked, searchText: $searchText)';
   }
 
   @override
@@ -166,16 +241,33 @@ class _$_HomepageState extends _HomepageState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_HomepageState &&
-            (identical(other.categoriesResponse, categoriesResponse) ||
-                other.categoriesResponse == categoriesResponse) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.joke, joke) || other.joke == joke) &&
-            const DeepCollectionEquality().equals(other.error, error));
+            (identical(other.error, error) || other.error == error) &&
+            const DeepCollectionEquality().equals(
+                other._selectedCustomCategories, _selectedCustomCategories) &&
+            const DeepCollectionEquality().equals(
+                other._selectedBlacklistCategories,
+                _selectedBlacklistCategories) &&
+            (identical(other.selectedLanguage, selectedLanguage) ||
+                other.selectedLanguage == selectedLanguage) &&
+            (identical(other.customCategoryChecked, customCategoryChecked) ||
+                other.customCategoryChecked == customCategoryChecked) &&
+            (identical(other.searchText, searchText) ||
+                other.searchText == searchText));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, categoriesResponse, status, joke,
-      const DeepCollectionEquality().hash(error));
+  int get hashCode => Object.hash(
+      runtimeType,
+      status,
+      joke,
+      error,
+      const DeepCollectionEquality().hash(_selectedCustomCategories),
+      const DeepCollectionEquality().hash(_selectedBlacklistCategories),
+      selectedLanguage,
+      customCategoryChecked,
+      searchText);
 
   @JsonKey(ignore: true)
   @override
@@ -186,20 +278,32 @@ class _$_HomepageState extends _HomepageState {
 
 abstract class _HomepageState extends HomepageState {
   factory _HomepageState(
-      {required final Categories categoriesResponse,
-      required final HomepagePageStatus status,
+      {required final HomepagePageStatus status,
       final String? joke,
-      final Object? error}) = _$_HomepageState;
+      final String? error,
+      final Map<String, bool>? selectedCustomCategories,
+      final Map<String, bool>? selectedBlacklistCategories,
+      final String? selectedLanguage,
+      final bool? customCategoryChecked,
+      final String? searchText}) = _$_HomepageState;
   _HomepageState._() : super._();
 
-  @override
-  Categories get categoriesResponse;
   @override
   HomepagePageStatus get status;
   @override
   String? get joke;
   @override
-  Object? get error;
+  String? get error;
+  @override
+  Map<String, bool>? get selectedCustomCategories;
+  @override
+  Map<String, bool>? get selectedBlacklistCategories;
+  @override
+  String? get selectedLanguage;
+  @override
+  bool? get customCategoryChecked;
+  @override
+  String? get searchText;
   @override
   @JsonKey(ignore: true)
   _$$_HomepageStateCopyWith<_$_HomepageState> get copyWith =>

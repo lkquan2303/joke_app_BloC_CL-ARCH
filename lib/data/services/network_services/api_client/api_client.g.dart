@@ -19,29 +19,35 @@ class _ApiClient implements ApiClient {
   String? baseUrl;
 
   @override
-  Future<ApiResponseModel<CategoriesModel>> submitJoke(body) async {
+  Future<JokeResponseModel> fetchJokeAPI(
+    categories,
+    lang,
+    blacklistFlags,
+    contains,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'lang': lang,
+      r'blacklistFlags': blacklistFlags,
+      r'contains': contains,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
-    _data.addAll(body.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<ApiResponseModel<CategoriesModel>>(Options(
-      method: 'POST',
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<JokeResponseModel>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '',
+              '/joke/${categories}',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = ApiResponseModel<CategoriesModel>.fromJson(
-      _result.data!,
-      (json) => CategoriesModel.fromJson(json as Map<String, dynamic>),
-    );
+    final value = JokeResponseModel.fromJson(_result.data!);
     return value;
   }
 

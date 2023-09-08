@@ -1,10 +1,12 @@
-import 'package:dio/dio.dart';
-import 'package:joke_app/data/repositories/category_repository_implement.dart';
-import 'package:joke_app/domain/use_cases/categories/submit_categories_use_case.dart';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:joke_app/data/repositories/joke_repository_implement.dart';
+import 'package:joke_app/domain/repositories/joke_repository.dart';
+import 'package:joke_app/domain/use_cases/joke/submit_joke_use_case.dart';
+import 'package:dio/adapter.dart';
 import '../data/services/network_services/api_client/api_client.dart';
 import '../data/services/network_services/interceptor/logger_interceptor.dart';
-import '../domain/repositories/categories_repository.dart';
 import '../utilities/app_helper/app_flavor_helper.dart';
 import '../utilities/app_helper/app_helper.dart';
 import '../utilities/dialog_helper/loading_full_screen_helper.dart';
@@ -31,7 +33,14 @@ class AppModules {
     injector.registerLazySingleton<Dio>(() {
       final dio = Dio();
       dio.options.baseUrl = injector.get<AppFlavor>().apiBaseUrl;
+      dio.httpClientAdapter = DefaultHttpClientAdapter();
 
+      (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+          (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+        return null;
+      };
       if (injector.get<AppFlavor>().isDevelopment) {
         dio.interceptors.add(LoggerInterceptor());
       }
@@ -50,12 +59,12 @@ class AppModules {
       () => LoadingFullScreenHelper(),
     );
 
-    injector.registerLazySingleton<SubmitCategoriesUseCase>(
-      () => SubmitCategoriesUseCase(),
+    injector.registerLazySingleton<SubmitJokeUseCase>(
+      () => SubmitJokeUseCase(),
     );
 
-    injector.registerLazySingleton<CategoriesRepository>(
-      () => CategoryRepositoryImplement(
+    injector.registerLazySingleton<JokeRepository>(
+      () => JokeRepositoryImplement(
         injector.get<ApiClient>(),
       ),
     );

@@ -42,10 +42,10 @@ class LoggerInterceptor extends Interceptor {
       final requestHeaders = <String, dynamic>{};
       requestHeaders.addAll(options.headers);
       requestHeaders['contentType'] = options.contentType?.toString();
-      requestHeaders['responseType'] = options.responseType.toString();
-      requestHeaders['followRedirects'] = options.followRedirects;
-      requestHeaders['connectTimeout'] = options.connectTimeout;
-      requestHeaders['receiveTimeout'] = options.receiveTimeout;
+      // requestHeaders['responseType'] = options.responseType.toString();
+      // requestHeaders['followRedirects'] = options.followRedirects;
+      // requestHeaders['connectTimeout'] = options.connectTimeout;
+      // requestHeaders['receiveTimeout'] = options.receiveTimeout;
 
       _prettyPrintData(
         data: requestHeaders,

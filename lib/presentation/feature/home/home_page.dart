@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:joke_app/domain/entities/categories_request.dart';
 import 'package:joke_app/presentation/base/base_page.dart';
 import 'package:joke_app/presentation/feature/home/bloc/home_page_presenter.dart';
 import 'package:joke_app/presentation/feature/home/bloc/home_page_state.dart';
 
+import '../../../data/mock/data.dart';
+import '../../../domain/entities/joke_request.dart';
 import '../../../injection/injector.dart';
-import '../../../utilities/dialog_helper/dialog_platform_helper.dart';
 import '../../app_routes.dart';
 import '../../base/progress_hud_mixin.dart';
 
@@ -25,48 +25,6 @@ class HomePage extends BasePage {
 class _HomePageState extends BasePageState<HomePage> with ProgressHudMixin {
   final _homepagePresenter = injector.get<HomepagePresenter>();
 
-  List<String> musicCategories = [
-    'Pop',
-    'Rock',
-    'Jazz',
-    'Classical',
-    'Hip-Hop',
-  ];
-
-  List<String> blacklistCategories = [
-    'Explicit',
-    'Live',
-    'Covers',
-  ];
-
-  Map<String, bool> selectedMusicCategories = {};
-  Map<String, bool> selectedBlacklistCategories = {};
-
-  String searchText = '';
-
-  @override
-  void initState() {
-    super.initState();
-
-    for (var category in musicCategories) {
-      selectedMusicCategories[category] = false;
-    }
-
-    for (var category in blacklistCategories) {
-      selectedBlacklistCategories[category] = false;
-    }
-  }
-
-  bool get isSubmitEnabled {
-    bool hasMusicCategorySelected =
-        selectedMusicCategories.values.any((value) => value);
-    bool hasBlacklistCategorySelected =
-        selectedBlacklistCategories.values.any((value) => value);
-    return hasMusicCategorySelected ||
-        hasBlacklistCategorySelected ||
-        searchText.isNotEmpty;
-  }
-
   @override
   Widget buildBody(BuildContext context) =>
       BlocConsumer<HomepagePresenter, HomepageState>(
@@ -83,15 +41,6 @@ class _HomePageState extends BasePageState<HomePage> with ProgressHudMixin {
           }
         },
         builder: (context, state) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (state.joke != null) {
-              DialogPlatformHelper(
-                title: 'Jokee',
-                content: state.joke!,
-              ).show();
-            }
-          });
-
           return buildBodyContent(
             builder: () {
               return GestureDetector(
@@ -102,61 +51,106 @@ class _HomePageState extends BasePageState<HomePage> with ProgressHudMixin {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Music Categories'),
-                          ...musicCategories.map((category) {
+                          //Render Language Picker
+                          const Text(
+                            'Select a language',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          DropdownButton<String>(
+                            hint: const Text("Select a language"),
+                            value: state.selectedLanguage,
+                            onChanged: (String? newValue) => _homepagePresenter
+                                .updateLanguage(newValue ?? ""),
+                            items: MockData.languages
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: Text(value),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(height: 20),
+
+                          //Render Category Picker
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: const Text(
+                              "Custom Category",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.only(right: 12),
+                              child: Checkbox(
+                                value: state.customCategoryChecked,
+                                onChanged: (bool? value) => _homepagePresenter
+                                    .updateCategoryChecked(value ?? false),
+                              ),
+                            ),
+                          ),
+
+                          if (state.customCategoryChecked ?? false)
+                            ...MockData.customCategories.map((category) {
+                              return CheckboxListTile(
+                                title: Text(category),
+                                value:
+                                    state.selectedCustomCategories![category],
+                                onChanged: (bool? value) =>
+                                    _homepagePresenter.selectCustomCategory(
+                                        value ?? false, category),
+                              );
+                            }).toList(),
+                          const SizedBox(height: 20),
+
+                          //Render Blacklist Picker
+                          const Text(
+                            'Blacklist (Optional)',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          ...MockData.blacklistCategories.map((category) {
                             return CheckboxListTile(
                               title: Text(category),
-                              value: selectedMusicCategories[category],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  selectedMusicCategories[category] = value!;
-                                });
-                              },
+                              value:
+                                  state.selectedBlacklistCategories![category],
+                              onChanged: (bool? value) =>
+                                  _homepagePresenter.selectBlackListCategory(
+                                      value ?? false, category),
                             );
                           }).toList(),
                           const SizedBox(height: 20),
-                          const Text('Blacklist Categories'),
-                          ...blacklistCategories.map((category) {
-                            return CheckboxListTile(
-                              title: Text(category),
-                              value: selectedBlacklistCategories[category],
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  selectedBlacklistCategories[category] =
-                                      value!;
-                                });
-                              },
-                            );
-                          }).toList(),
-                          const SizedBox(height: 20),
+
+                          //Render Search Picker
                           TextField(
-                            onChanged: (value) {
-                              setState(() {
-                                searchText = value;
-                              });
-                            },
+                            onChanged: (value) =>
+                                _homepagePresenter.updateSearchString(value),
                             decoration: const InputDecoration(
                               labelText: 'Search',
                               border: OutlineInputBorder(),
                             ),
                           ),
                           const SizedBox(height: 20),
-                          Opacity(
-                            opacity: isSubmitEnabled ? 1.0 : 0.5,
+                          Center(
                             child: ElevatedButton(
-                              onPressed: isSubmitEnabled
-                                  ? () {
-                                      _homepagePresenter.submitCategories(
-                                        CategoriesRequest(
-                                          musicCategories: musicCategories,
-                                          blacklistCategories:
-                                              blacklistCategories,
-                                          searchText: searchText,
-                                        ),
-                                      );
-                                    }
-                                  : null,
+                              onPressed: () {
+                                FocusManager.instance.primaryFocus?.unfocus();
+                                JokeRequest jokeRequest = _homepagePresenter
+                                    .buildJokeRequestFromState(state);
+                                _homepagePresenter.submitJoke(
+                                    jokeRequest, context);
+                              },
                               child: const Text('Submit'),
                             ),
                           ),
